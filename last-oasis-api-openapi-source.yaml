@@ -1,0 +1,174 @@
+openapi: 3.1.0
+info:
+  title: last-oasis-api
+  version: '1.0'
+  description: Unofficial documentation for the Last Oasis API
+  license:
+    url: 'https://drive.google.com/file/d/1NARSGQgIjV-ByenXkLPaF3QYX58B2bri/view'
+servers:
+  - url: 'https://myrealm.lastoasis.gg/api'
+paths:
+  /whitelist/getwhitelist:
+    get:
+      summary: getwhitelist
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                x-examples:
+                  example-1:
+                    result:
+                      - id: 246399644
+                        uniqueNetId: 'STEAM:76561197995567755'
+                        description: test
+                    problem: null
+                    success: true
+                properties:
+                  result:
+                    uniqueItems: true
+                    minItems: 1
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/WhiteListUser'
+                  problem:
+                    type:
+                      - 'null'
+                      - string
+                  success:
+                    type: boolean
+                required:
+                  - result
+                  - success
+        '401':
+          description: Unauthorized
+      operationId: getwhitelist
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: realmid
+          description: Realm ID
+          required: true
+      security:
+        - ApiKey: []
+  /whitelist/createwhitelistitem:
+    post:
+      summary: createwhitelistitem
+      operationId: createwhitelistitem
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: Unauthorized
+      description: ''
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: ''
+              type: object
+              x-examples:
+                example-1:
+                  realmid: 95804
+                  uniquenetid: '76561197995567755'
+                  description: test
+              properties:
+                realmid:
+                  type: integer
+                uniquenetid:
+                  type: string
+                  minLength: 1
+                description:
+                  type: string
+                  minLength: 1
+              required:
+                - realmid
+                - uniquenetid
+      security:
+        - ApiKey: []
+  /whitelist/deletewhitelistitem:
+    post:
+      summary: deletewhitelistitem
+      operationId: deletewhitelistitem
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                x-examples:
+                  example-1:
+                    result: true
+                    problem: null
+                    success: true
+                properties:
+                  result:
+                    type: boolean
+                  problem:
+                    type:
+                      - 'null'
+                      - string
+                  success:
+                    type: boolean
+                required:
+                  - result
+                  - success
+        '401':
+          description: Unauthorized
+      security:
+        - ApiKey: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: ''
+              type: object
+              x-examples:
+                example-1:
+                  realmid: 123
+                  uniquenetid: steamid
+              properties:
+                realmid:
+                  type: integer
+                uniquenetid:
+                  type: string
+                  minLength: 1
+              required:
+                - realmid
+                - uniquenetid
+            examples: {}
+components:
+  schemas:
+    WhiteListUser:
+      description: ''
+      type: object
+      x-examples:
+        example-1:
+          id: 246399644
+          uniqueNetId: 'STEAM:76561197995567755'
+          description: test
+      properties:
+        id:
+          type: integer
+        uniqueNetId:
+          type: string
+          minLength: 1
+        description:
+          type: string
+          minLength: 1
+      required:
+        - id
+        - uniqueNetId
+  securitySchemes:
+    ApiKey:
+      name: API Key
+      type: apiKey
+      in: header

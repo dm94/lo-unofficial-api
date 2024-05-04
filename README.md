@@ -1,2 +1,3 @@
 # lo-unofficial-api
-Unofficial LO documentation
+
+Unofficial documentation for the Last Oasis API
